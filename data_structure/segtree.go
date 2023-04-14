@@ -1,24 +1,24 @@
 package data_structure
 
 import (
-	"github.com/matumoto1234/go-compro-library/internal"
-	"github.com/matumoto1234/go-compro-library/utility"
+	"github.com/matumoto1234/go-compro-library/internal/bit"
+	"github.com/matumoto1234/go-compro-library/util"
 )
 
 type SegmentTree[T any] struct {
-	m       utility.Monoid[T]
+	m       util.Monoid[T]
 	oldSize int
 	size    int
 	log     int
 	Vs      []T
 }
 
-func NewSegmentTree[T any](n int, m utility.Monoid[T]) *SegmentTree[T] {
+func NewSegmentTree[T any](n int, m util.Monoid[T]) *SegmentTree[T] {
 	return NewSegmentTreeWithSlice(make([]T, n), m)
 }
 
-func NewSegmentTreeWithSlice[T any](a []T, m utility.Monoid[T]) *SegmentTree[T] {
-	size := internal.BitCeil(uint64(len(a)))
+func NewSegmentTreeWithSlice[T any](a []T, m util.Monoid[T]) *SegmentTree[T] {
+	size := bit.BitCeil(uint64(len(a)))
 	vs := make([]T, 2*size)
 
 	for i := 0; i < len(a); i++ {
@@ -33,13 +33,13 @@ func NewSegmentTreeWithSlice[T any](a []T, m utility.Monoid[T]) *SegmentTree[T] 
 		m:       m,
 		oldSize: len(a),
 		size:    size,
-		log:     internal.CountRightZero(uint64(size)),
+		log:     bit.CountRightZero(uint64(size)),
 		Vs:      vs,
 	}
 }
 
 func (s *SegmentTree[T]) Set(p int, x T) {
-	utility.Assert(0 <= p && p < s.oldSize, utility.AssertMsg("index out of range"))
+	util.Assert(0 <= p && p < s.oldSize, util.AssertMsg("index out of range"))
 
 	p += s.size
 	s.Vs[p] = x
@@ -49,13 +49,13 @@ func (s *SegmentTree[T]) Set(p int, x T) {
 }
 
 func (s *SegmentTree[T]) Get(p int) T {
-	utility.Assert(0 <= p && p < s.oldSize, utility.AssertMsg("index out of range"))
+	util.Assert(0 <= p && p < s.oldSize, util.AssertMsg("index out of range"))
 
 	return s.Vs[p+s.size]
 }
 
 func (s *SegmentTree[T]) Prod(l, r int) T {
-	utility.Assert(0 <= l && l <= r && r <= s.oldSize, utility.AssertMsg("index out of range"))
+	util.Assert(0 <= l && l <= r && r <= s.oldSize, util.AssertMsg("index out of range"))
 
 	l += s.size
 	r += s.size
@@ -83,8 +83,8 @@ func (s *SegmentTree[T]) AllProd() T {
 // MaxRight returns the maximum r (l <= r)
 // such that f(op(a[l], a[l+1], ..., a[r-1])) = true.
 func (s *SegmentTree[T]) MaxRight(l int, f func(T) bool) int {
-	utility.Assert(0 <= l && l <= s.oldSize, utility.AssertMsg("index out of range"))
-	utility.Assert(f(s.m.E()), utility.AssertMsg("f(e) must be true for some e"))
+	util.Assert(0 <= l && l <= s.oldSize, util.AssertMsg("index out of range"))
+	util.Assert(f(s.m.E()), util.AssertMsg("f(e) must be true for some e"))
 
 	if l == s.oldSize {
 		return s.oldSize
@@ -117,8 +117,8 @@ func (s *SegmentTree[T]) MaxRight(l int, f func(T) bool) int {
 // MinLeft returns the minimum l (l <= r)
 // such that f(op(a[l], a[l+1], ..., a[r-1])) = true.
 func (s *SegmentTree[T]) MinLeft(r int, f func(T) bool) int {
-	utility.Assert(0 <= r && r <= s.oldSize, utility.AssertMsg("index out of range"))
-	utility.Assert(f(s.m.E()), utility.AssertMsg("f(e) must be true for some e"))
+	util.Assert(0 <= r && r <= s.oldSize, util.AssertMsg("index out of range"))
+	util.Assert(f(s.m.E()), util.AssertMsg("f(e) must be true for some e"))
 
 	if r == 0 {
 		return 0

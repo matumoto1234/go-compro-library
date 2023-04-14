@@ -1,4 +1,4 @@
-package utility
+package util
 
 type AssertOpts struct {
 	Msg string

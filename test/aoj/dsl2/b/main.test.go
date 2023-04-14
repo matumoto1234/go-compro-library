@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/matumoto1234/go-compro-library/data_structure"
-	"github.com/matumoto1234/go-compro-library/utility"
+	"github.com/matumoto1234/go-compro-library/util"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	var n, q int
 	fmt.Fscan(stdin, &n, &q)
 
-	st := data_structure.NewSegmentTree(n, utility.NewMonoid(
+	st := data_structure.NewSegmentTree(n, util.NewMonoid(
 		func(a, b int) int {
 			return a + b
 		},

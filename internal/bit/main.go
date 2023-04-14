@@ -1,4 +1,4 @@
-package internal
+package bit
 
 func BitCeil(n uint64) int {
 	x := uint64(1)

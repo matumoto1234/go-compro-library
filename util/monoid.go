@@ -1,4 +1,4 @@
-package utility
+package util
 
 type Monoid[T any] interface {
 	Op(T, T) T // binary operation
