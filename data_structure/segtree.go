@@ -18,7 +18,7 @@ func NewSegmentTree[T any](n int, m util.Monoid[T]) *SegmentTree[T] {
 }
 
 func NewSegmentTreeWithSlice[T any](a []T, m util.Monoid[T]) *SegmentTree[T] {
-	size := bit.BitCeil(uint64(len(a)))
+	size := int(bit.BitCeil(uint64(len(a))))
 	vs := make([]T, 2*size)
 
 	for i := 0; i < len(a); i++ {

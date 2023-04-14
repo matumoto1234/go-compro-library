@@ -1,11 +1,11 @@
 package bit
 
-func BitCeil(n uint64) int {
+func BitCeil(n uint64) uint64 {
 	x := uint64(1)
 	for x < n {
 		x <<= 1
 	}
-	return int(x)
+	return x
 }
 
 func CountRightZero(n uint64) int {
