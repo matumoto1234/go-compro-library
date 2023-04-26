@@ -1,6 +1,6 @@
-package data_structure
+package datastructure
 
-import "github.com/matumoto1234/go-compro-library/util"
+import "github.com/matumoto1234/go-compro-library/assert"
 
 type UnionFind struct {
 	n      int
@@ -35,8 +35,8 @@ const (
 )
 
 func (u *UnionFind) Merge(l, r int) MergeState {
-	util.Assert(0 <= l && l < u.n)
-	util.Assert(0 <= r && r < u.n)
+	assert.Do(0 <= l && l < u.n)
+	assert.Do(0 <= r && r < u.n)
 	x := u.Root(l)
 	y := u.Root(r)
 	if x == y {
@@ -56,7 +56,7 @@ func (u *UnionFind) Merge(l, r int) MergeState {
 }
 
 func (u *UnionFind) Root(a int) int {
-	util.Assert(0 <= a && a < u.n)
+	assert.Do(0 <= a && a < u.n)
 	if u.parent[a] == a {
 		return a
 	}
@@ -65,13 +65,13 @@ func (u *UnionFind) Root(a int) int {
 }
 
 func (u *UnionFind) Same(a, b int) bool {
-	util.Assert(0 <= a && a < u.n)
-	util.Assert(0 <= b && b < u.n)
+	assert.Do(0 <= a && a < u.n)
+	assert.Do(0 <= b && b < u.n)
 	return u.Root(a) == u.Root(b)
 }
 
 func (u *UnionFind) Size(a int) int {
-	util.Assert(0 <= a && a < u.n)
+	assert.Do(0 <= a && a < u.n)
 	return u.size[u.Root(a)]
 }
 

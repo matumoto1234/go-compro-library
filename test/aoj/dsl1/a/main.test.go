@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/matumoto1234/go-compro-library/data_structure"
+	"github.com/matumoto1234/go-compro-library/datastructure"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 	var n, q int
 	fmt.Fscan(stdin, &n, &q)
 
-	uf := data_structure.NewUnionFind(n)
+	uf := datastructure.NewUnionFind(n)
 
 	for i:=0;i<q;i++{
 		var com, x, y int

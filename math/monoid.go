@@ -1,4 +1,6 @@
-package util
+package math
+
+var _ Monoid[int] = (*monoidImpl[int])(nil)
 
 type Monoid[T any] interface {
 	Op(T, T) T // binary operation
@@ -18,6 +20,6 @@ func (m *monoidImpl[T]) E() T {
 	return m.e()
 }
 
-func NewMonoid[T any](op func(T, T) T, e func() T) Monoid[T] {
+func NewMonoid[T any](op func(T, T) T, e func() T) *monoidImpl[T] {
 	return &monoidImpl[T]{op, e}
 }

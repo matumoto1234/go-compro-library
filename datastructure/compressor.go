@@ -1,10 +1,10 @@
-package data_structure
+package datastructure
 
 import (
 	"sort"
 
 	"github.com/matumoto1234/go-compro-library/algorithm"
-	"github.com/matumoto1234/go-compro-library/util"
+	"github.com/matumoto1234/go-compro-library/assert"
 	"golang.org/x/exp/constraints"
 )
 
@@ -27,9 +27,9 @@ func NewCompressor[T constraints.Ordered](vs []T) *Compressor[T] {
 
 func (c *Compressor[T]) Do(x T) int {
 	i := algorithm.LowerBound(c.Xs, x)
-	util.Assert(
+	assert.Do(
 		c.Xs[i] == x,
-		util.AssertMsg("Compressor.Do() : x is not in the original array"),
+		assert.Msg("Compressor.Do() : x is not in the original array"),
 	)
 	return i
 }
