@@ -1,8 +1,11 @@
-package algorithm
+package permutation
 
-import "golang.org/x/exp/constraints"
+import (
+	"github.com/matumoto1234/go-compro-library/algorithm/reverse"
+	"golang.org/x/exp/constraints"
+)
 
-func NextPermutation[T constraints.Ordered](a []T) bool {
+func Next[T constraints.Ordered](a []T) bool {
 	for i := len(a) - 2; i >= 0; i-- {
 		if a[i] < a[i+1] {
 			j := len(a) - 1
@@ -10,17 +13,17 @@ func NextPermutation[T constraints.Ordered](a []T) bool {
 				j--
 			}
 			a[i], a[j] = a[j], a[i]
-			Reverse(a[i+1:])
+			reverse.Do(a[i+1:])
 			return true
 		}
 		if i == 0 {
-			Reverse(a)
+			reverse.Do(a)
 		}
 	}
 	return false
 }
 
-func PrevPermutation[T constraints.Ordered](a []T) bool {
+func Prev[T constraints.Ordered](a []T) bool {
 	for i := len(a) - 2; i >= 0; i-- {
 		if a[i] > a[i+1] {
 			j := len(a) - 1
@@ -28,11 +31,11 @@ func PrevPermutation[T constraints.Ordered](a []T) bool {
 				j--
 			}
 			a[i], a[j] = a[j], a[i]
-			Reverse(a[i+1:])
+			reverse.Do(a[i+1:])
 			return true
 		}
 		if i == 0 {
-			Reverse(a)
+			reverse.Do(a)
 		}
 	}
 	return false

@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/matumoto1234/go-compro-library/datastructure"
-	"github.com/matumoto1234/go-compro-library/datastructure/tree"
+	"github.com/matumoto1234/go-compro-library/datastructure/compressor"
+	"github.com/matumoto1234/go-compro-library/datastructure/fenwicktree"
 )
 
 func main() {
@@ -24,8 +24,8 @@ func main() {
 		fmt.Fscan(stdin, &a[i])
 	}
 
-	c := datastructure.NewCompressor(a)
-	f := tree.NewFenwick[int](n)
+	c := compressor.New(a)
+	f := fenwicktree.New[int](n)
 
 	var ans int64
 	for i, v := range a {

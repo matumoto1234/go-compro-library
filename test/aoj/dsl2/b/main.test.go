@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/matumoto1234/go-compro-library/datastructure/tree"
+	"github.com/matumoto1234/go-compro-library/datastructure/segtree"
 	"github.com/matumoto1234/go-compro-library/math"
 )
 
@@ -19,7 +19,7 @@ func main() {
 	var n, q int
 	fmt.Fscan(stdin, &n, &q)
 
-	st := tree.NewSegment[int](n, math.NewMonoid(
+	st := segtree.New[int](n, math.NewMonoid(
 		func(a, b int) int {
 			return a + b
 		},

@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/matumoto1234/go-compro-library/algorithm"
-	"github.com/matumoto1234/go-compro-library/datastructure"
+	"github.com/matumoto1234/go-compro-library/algorithm/min"
+	"github.com/matumoto1234/go-compro-library/datastructure/accumulator"
 )
 
 var stdin = bufio.NewReader(os.Stdin)
@@ -27,14 +27,14 @@ func solve() bool {
 		fmt.Fscan(stdin, &a[i])
 	}
 
-	cs := datastructure.NewSumAccumulator(a)
+	cs := accumulator.NewSum(a)
 	ans := 0
 
 	for i := 0; i < n; i++ {
 		if i+k > n {
 			break
 		}
-		ans = algorithm.Max([]int{ans, cs.Range(i, i+k)})
+		ans = min.Ordered([]int{ans, cs.Range(i, i+k)})
 	}
 
 	fmt.Fprintln(stdout, ans)

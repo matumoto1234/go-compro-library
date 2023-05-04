@@ -1,38 +1,38 @@
-package tree
+package fenwicktree
 
 import (
 	"fmt"
 
-	"github.com/matumoto1234/go-compro-library/assert"
 	"github.com/matumoto1234/go-compro-library/internal/bit"
 	"github.com/matumoto1234/go-compro-library/math"
+	"github.com/matumoto1234/go-compro-library/util/assert"
 )
 
-type Fenwick[T math.Number] struct {
-	n  int
-	vs []T
+type FenwickTree[T math.Number] struct {
+	n    int
+	data []T
 }
 
-func NewFenwick[T math.Number](n int) *Fenwick[T] {
+func New[T math.Number](n int) *FenwickTree[T] {
 	vs := make([]T, n)
-	return &Fenwick[T]{n, vs}
+	return &FenwickTree[T]{n, vs}
 }
 
 // Add() : add x to p-th element
 // p : 0-indexed
-func (f *Fenwick[T]) Add(p int, x T) {
+func (f *FenwickTree[T]) Add(p int, x T) {
 	assert.Do(0 <= p && p < f.n, assert.Msg("FenwickTree.Add() : p is out of range"))
 	p++ // to 1-indexed
 	for p <= f.n {
 		// p-1 : 0-indexed
-		f.vs[p-1] += x
+		f.data[p-1] += x
 		p += p & -p
 	}
 }
 
 // Sum() : return sum of [l, r)
 // l, r : 0-indexed
-func (f *Fenwick[T]) Sum(l, r int) T {
+func (f *FenwickTree[T]) Sum(l, r int) T {
 	assert.Do(
 		0 <= l && l <= r && r <= f.n,
 		assert.Msg(fmt.Sprintf("FenwickTree.Sum() : l or r is out of range\nl : %d, r : %d, f.n : %d", l, r, f.n)),
@@ -47,7 +47,7 @@ func (f *Fenwick[T]) Sum(l, r int) T {
 // requires f.Sum() to monotonically increasing
 //
 //	i.e. f.Sum(0, p) <= f.Sum(0, p+1) for all p
-func (f *Fenwick[T]) LowerBound(w T) int {
+func (f *FenwickTree[T]) LowerBound(w T) int {
 	if w <= 0 {
 		return 0
 	}
@@ -61,8 +61,8 @@ func (f *Fenwick[T]) LowerBound(w T) int {
 			continue
 		}
 
-		if s+f.vs[i] <= w {
-			s += f.vs[i]
+		if s+f.data[i] <= w {
+			s += f.data[i]
 			p += r - 1 // 0-indexed
 		}
 	}
@@ -73,13 +73,13 @@ func (f *Fenwick[T]) LowerBound(w T) int {
 // requires f.Sum() to monotonically increasing
 //
 //	i.e. f.Sum(0, p) <= f.Sum(0, p+1) for all p
-func (f *Fenwick[T]) UpperBound(w T) int {
+func (f *FenwickTree[T]) UpperBound(w T) int {
 	return f.LowerBound(w + 1)
 }
 
 // sum() : return sum of [0, p]
 // p : 0-indexed
-func (f *Fenwick[T]) sum(p int) T {
+func (f *FenwickTree[T]) sum(p int) T {
 	if p < 0 {
 		return T(0)
 	}
@@ -88,7 +88,7 @@ func (f *Fenwick[T]) sum(p int) T {
 	s := T(0)
 	for p > 0 {
 		// p-1 : 0-indexed
-		s += f.vs[p-1]
+		s += f.data[p-1]
 		p -= p & -p
 	}
 	return s

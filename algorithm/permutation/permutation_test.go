@@ -1,4 +1,4 @@
-package algorithm
+package permutation
 
 import (
 	"reflect"
@@ -63,7 +63,7 @@ func Test_NextPermutation_Int(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			got := NextPermutation(test.a)
+			got := Next(test.a)
 			if got != test.wantBool {
 				t.Errorf("got %v, want %v", got, test.wantBool)
 			}
@@ -133,7 +133,7 @@ func Test_PrevPermutation_Int(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			got := PrevPermutation(test.a)
+			got := Prev(test.a)
 			if got != test.wantBool {
 				t.Errorf("got %v, want %v", got, test.wantBool)
 			}

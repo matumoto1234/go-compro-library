@@ -1,10 +1,10 @@
-package datastructure
+package compressor
 
 import (
 	"sort"
 
-	"github.com/matumoto1234/go-compro-library/algorithm"
-	"github.com/matumoto1234/go-compro-library/assert"
+	"github.com/matumoto1234/go-compro-library/algorithm/uniq"
+	"github.com/matumoto1234/go-compro-library/util/assert"
 	"golang.org/x/exp/constraints"
 )
 
@@ -12,7 +12,7 @@ type Compressor[T constraints.Ordered] struct {
 	Xs []T
 }
 
-func NewCompressor[T constraints.Ordered](vs []T) *Compressor[T] {
+func New[T constraints.Ordered](vs []T) *Compressor[T] {
 	xs := make([]T, len(vs))
 	copy(xs, vs)
 
@@ -21,12 +21,14 @@ func NewCompressor[T constraints.Ordered](vs []T) *Compressor[T] {
 	})
 
 	return &Compressor[T]{
-		Xs: algorithm.Uniq(xs),
+		Xs: uniq.Do(xs),
 	}
 }
 
 func (c *Compressor[T]) Do(x T) int {
-	i := algorithm.LowerBound(c.Xs, x)
+	i := sort.Search(len(c.Xs), func(i int) bool {
+		return c.Xs[i] >= x
+	})
 	assert.Do(
 		c.Xs[i] == x,
 		assert.Msg("Compressor.Do() : x is not in the original array"),

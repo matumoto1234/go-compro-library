@@ -1,4 +1,4 @@
-package datastructure
+package accumulator
 
 import "github.com/matumoto1234/go-compro-library/math/group"
 
@@ -7,7 +7,7 @@ type Accumulator[T any] struct {
 	Abe group.Abelian[T]
 }
 
-func NewAccumulator[T any](a []T, abe group.Abelian[T]) *Accumulator[T] {
+func New[T any](a []T, abe group.Abelian[T]) *Accumulator[T] {
 	sum := make([]T, len(a)+1)
 
 	for i, v := range a {
@@ -25,8 +25,12 @@ func (a *Accumulator[T]) Range(l, r int) T {
 	return a.Abe.Op(a.Sum[r], a.Abe.Inv(a.Sum[l]))
 }
 
-func NewSumAccumulator(a []int) *Accumulator[int] {
-	return NewAccumulator[int](
+// NewSum() : constructs a new Accumulator for int.
+// op : +
+// e : 0
+// inv : -
+func NewSum(a []int) *Accumulator[int] {
+	return New[int](
 		a,
 		group.NewAbelian(
 			func(x, y int) int {

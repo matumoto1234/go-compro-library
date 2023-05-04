@@ -1,6 +1,6 @@
-package datastructure
+package unionfind
 
-import "github.com/matumoto1234/go-compro-library/assert"
+import "github.com/matumoto1234/go-compro-library/util/assert"
 
 type UnionFind struct {
 	n      int
@@ -8,7 +8,7 @@ type UnionFind struct {
 	size   []int
 }
 
-func NewUnionFind(n int) *UnionFind {
+func New(n int) *UnionFind {
 	parent := make([]int, n)
 	for i := 0; i < n; i++ {
 		parent[i] = i

@@ -1,4 +1,4 @@
-package algorithm
+package reverse
 
 import (
 	"reflect"
@@ -47,7 +47,7 @@ func Test_Reverse_Int(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			Reverse(test.a)
+			Do(test.a)
 			if !reflect.DeepEqual(test.a, test.want) {
 				t.Errorf("got %v, want %v", test.a, test.want)
 			}
@@ -97,7 +97,7 @@ func Test_Reverse_String(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			Reverse(test.a)
+			Do(test.a)
 			if !reflect.DeepEqual(test.a, test.want) {
 				t.Errorf("got %v, want %v", test.a, test.want)
 			}
@@ -145,7 +145,7 @@ func Test_Reverse_Struct(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			Reverse(test.a)
+			Do(test.a)
 			if !reflect.DeepEqual(test.a, test.want) {
 				t.Errorf("got %v, want %v", test.a, test.want)
 			}
