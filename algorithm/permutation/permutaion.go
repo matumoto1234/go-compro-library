@@ -13,11 +13,11 @@ func Next[T constraints.Ordered](a []T) bool {
 				j--
 			}
 			a[i], a[j] = a[j], a[i]
-			reverse.Do(a[i+1:])
+			reverse.Slice(a[i+1:])
 			return true
 		}
 		if i == 0 {
-			reverse.Do(a)
+			reverse.Slice(a)
 		}
 	}
 	return false
@@ -31,11 +31,11 @@ func Prev[T constraints.Ordered](a []T) bool {
 				j--
 			}
 			a[i], a[j] = a[j], a[i]
-			reverse.Do(a[i+1:])
+			reverse.Slice(a[i+1:])
 			return true
 		}
 		if i == 0 {
-			reverse.Do(a)
+			reverse.Slice(a)
 		}
 	}
 	return false

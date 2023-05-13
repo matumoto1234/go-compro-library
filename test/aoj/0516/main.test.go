@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/matumoto1234/go-compro-library/algorithm/min"
+	"github.com/matumoto1234/go-compro-library/algorithm/max"
 	"github.com/matumoto1234/go-compro-library/datastructure/accumulator"
 )
 
@@ -34,7 +34,7 @@ func solve() bool {
 		if i+k > n {
 			break
 		}
-		ans = min.Ordered([]int{ans, cs.Range(i, i+k)})
+		ans = max.Ordered([]int{ans, cs.Range(i, i+k)})
 	}
 
 	fmt.Fprintln(stdout, ans)
