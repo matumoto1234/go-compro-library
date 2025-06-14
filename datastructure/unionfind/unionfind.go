@@ -26,12 +26,12 @@ func New(n int) *UnionFind {
 	}
 }
 
-type MergeState string
+type MergeState int
 
 const (
-	LeftMerged  MergeState = "left merged"
-	NotMerged   MergeState = "not merged"
-	RightMerged MergeState = "right merged"
+	NotMerged MergeState = iota
+	LeftMerged
+	RightMerged
 )
 
 func (u *UnionFind) Merge(l, r int) MergeState {
