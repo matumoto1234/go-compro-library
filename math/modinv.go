@@ -1,6 +1,6 @@
 package math
 
-import "golang.org/x/exp/constraints"
+import "github.com/matumoto1234/go-compro-library/math/constraints"
 
 // a^-1 (mod m)
 func ModInv[T constraints.Integer](a, m T) T {

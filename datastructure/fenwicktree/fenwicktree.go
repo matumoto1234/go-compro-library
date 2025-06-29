@@ -4,16 +4,16 @@ import (
 	"fmt"
 
 	"github.com/matumoto1234/go-compro-library/internal/bit"
-	"github.com/matumoto1234/go-compro-library/math"
+	"github.com/matumoto1234/go-compro-library/math/constraints"
 	"github.com/matumoto1234/go-compro-library/util/assert"
 )
 
-type FenwickTree[T math.Number] struct {
+type FenwickTree[T constraints.Number] struct {
 	n    int
 	data []T
 }
 
-func New[T math.Number](n int) *FenwickTree[T] {
+func New[T constraints.Number](n int) *FenwickTree[T] {
 	vs := make([]T, n)
 	return &FenwickTree[T]{n, vs}
 }

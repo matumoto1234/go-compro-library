@@ -1,6 +1,6 @@
 package math
 
-import "golang.org/x/exp/constraints"
+import "github.com/matumoto1234/go-compro-library/math/constraints"
 
 // return (gcd, x, y)
 func ExtGCD[T constraints.Integer](a, b T) (T, T, T) {

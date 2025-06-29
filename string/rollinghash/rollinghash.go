@@ -2,6 +2,7 @@ package rollinghash
 
 import (
 	"math/rand"
+	"sync"
 
 	"github.com/matumoto1234/go-compro-library/math"
 )
@@ -10,6 +11,15 @@ const mask30 = (1 << 30) - 1
 const mask31 = (1 << 31) - 1
 const mask61 = (1 << 61) - 1
 const Mod = (1 << 61) - 1
+
+var base uint
+var once sync.Once
+
+func init() {
+	once.Do(func() {
+		base = uint(rand.Int63n(Mod))
+	})
+}
 
 type RollingHash struct {
 	Base             uint
@@ -24,12 +34,10 @@ func NewRollingHash(s string) *RollingHash {
 		values[i] = int(s[i])
 	}
 
-	base := uint(rand.Int63n(Mod))
-
 	inv, cumulativeHashes := constructInvAndHashes(base, values)
 
 	return &RollingHash{
-		Base:             uint(rand.Uint64()),
+		Base:             base,
 		Values:           values,
 		Inv:              inv,
 		CumulativeHashes: cumulativeHashes,
