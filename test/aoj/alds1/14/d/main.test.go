@@ -1,12 +1,72 @@
-package rollinghash
+// verification-helper: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/lesson/1/ALDS1/14/ALDS1_14_D
+
+package main
 
 import (
+	"bufio"
+	"fmt"
 	"math/rand"
+	"os"
+	"sort"
+	"strings"
 	"sync"
-
-	"github.com/matumoto1234/go-compro-library/algorithm/min"
-	"github.com/matumoto1234/go-compro-library/math"
 )
+
+func main() {
+	stdin := bufio.NewReader(os.Stdin)
+	stdout := bufio.NewWriter(os.Stdout)
+	defer stdout.Flush()
+
+	var t string
+	fmt.Fscan(stdin, &t)
+
+	sa := NewSuffixArray(t)
+
+	var q int
+	fmt.Fscan(stdin, &q)
+
+	for qi := 0; qi < q; qi++ {
+		var p string
+		fmt.Fscan(stdin, &p)
+
+		ok := len(t) - 1 // sa[i] >= p なる最小のi
+		ng := -1
+
+		isOK := func(x int) bool {
+			return t[sa[x]:] >= p
+		}
+
+		for ok-ng > 1 {
+			mid := (ok + ng) / 2
+			if isOK(mid) {
+				ok = mid
+			} else {
+				ng = mid
+			}
+		}
+
+		if strings.HasPrefix(t[sa[ok]:], p) {
+			fmt.Fprintln(stdout, 1)
+		} else {
+			fmt.Fprintln(stdout, 0)
+		}
+	}
+}
+
+func NewSuffixArray(s string) []int {
+	rh := NewRollingHash(s)
+
+	sa := make([]int, len(s))
+	for i := range sa {
+		sa[i] = i
+	}
+
+	sort.Slice(sa, func(i, j int) bool {
+		return rh.Less(sa[i], len(s), sa[j], len(s))
+	})
+
+	return sa
+}
 
 const mask30 = (1 << 30) - 1
 const mask31 = (1 << 31) - 1
@@ -45,6 +105,24 @@ func NewRollingHash(s string) *RollingHash {
 	}
 }
 
+type Float interface {
+	~float32 | ~float64
+}
+
+type Ordered interface {
+	Integer | Float | ~string
+}
+
+func min[T Ordered](a []T) T {
+	m := a[0]
+	for _, v := range a {
+		if v < m {
+			m = v
+		}
+	}
+	return m
+}
+
 func (rh *RollingHash) Less(l1, r1, l2, r2 int) bool {
 	if rh.Find(l1, r1) == rh.Find(l2, r2) {
 		return false
@@ -57,7 +135,7 @@ func (rh *RollingHash) Less(l1, r1, l2, r2 int) bool {
 	len2 := r2 - l2
 
 	samePrefixCount := 1
-	ng := min.Ordered([]int{len1, len2}) + 1
+	ng := min([]int{len1, len2}) + 1
 
 	isPrefixSame := func(k int) bool {
 		return rh.Find(l1, l1+k) == rh.Find(l2, l2+k)
@@ -82,7 +160,7 @@ func (rh *RollingHash) Less(l1, r1, l2, r2 int) bool {
 		return false // { 0 <= i < min(|S|, |T|) | Si == Ti } && |S| == |T|
 	}
 
-	return rh.Values[l1+samePrefixCount+1] < rh.Values[l2+samePrefixCount+1]
+	return rh.Values[l1+samePrefixCount] < rh.Values[l2+samePrefixCount]
 }
 
 // [l, r)
@@ -103,7 +181,7 @@ func constructInvAndHashes(base uint, values []int) ([]int, []int) {
 	inv := make([]int, n+1)
 	cumulativeHashes := make([]int, n+1)
 
-	baseInv := int(math.ModInv(base, Mod))
+	baseInv := int(ModInv(base, Mod))
 	inv[n] = modPow(baseInv, n)
 	basePowI := 1
 
@@ -155,4 +233,40 @@ func mod(x int) int {
 		res -= Mod
 	}
 	return res
+}
+
+type Integer interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+}
+
+// return (gcd, x, y)
+func ExtGCD[T Integer](a, b T) (T, T, T) {
+	return extGCD(a, b, 0, 0)
+}
+
+func extGCD[T Integer](a, b, x, y T) (T, T, T) {
+	if b == 0 {
+		// a * 1 + b * 0 = gcd(a, b)
+		return a, 1, 0
+	}
+
+	q := a / b
+	r := a % b
+
+	s := q*x + y
+	t := x
+
+	gcd, s, t := extGCD(b, r, s, t)
+
+	return gcd, t, s - q*t
+}
+
+// a^-1 (mod m)
+func ModInv[T Integer](a, m T) T {
+	// a*x + mod*y = 1
+	_, x, _ := ExtGCD(a, m)
+	if x < 0 {
+		x += m
+	}
+	return x % m
 }

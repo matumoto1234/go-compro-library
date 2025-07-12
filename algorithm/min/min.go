@@ -1,6 +1,6 @@
 package min
 
-import "golang.org/x/exp/constraints"
+import "github.com/matumoto1234/go-compro-library/math/constraints"
 
 func Ordered[T constraints.Ordered](a []T) T {
 	m := a[0]
